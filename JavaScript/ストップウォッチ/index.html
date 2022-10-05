@@ -17,8 +17,14 @@
 </head>
 
 <body>
+    <header>
+        <div class="container">
+            <h1>現在時刻 <span id="nowTime"></span></h1>
+        </div>
+    </header>
+
     <div class="container">
-        <p id="timer">00:00:00</p>
+        <p id="timer">00:00:00.00</p>
 
         <div>
             <button id="start_stop" class="btn btn-lg btn-primary">START</button>
@@ -27,37 +33,58 @@
 
     <script>
         var start;
-        var timer_id
+        var timer_id;
 
+        //ボタン(START, STOP)をクリックしたときの動作
         document.getElementById('start_stop').addEventListener('click', function () {
             if (this.innerHTML === 'START') {
                 start = new Date();
-
                 timer_id = setInterval(goTimer, 10);
 
-                //STOPボタンにする
+                //STARTを押すとSTOPボタンにする
                 this.innerHTML = 'STOP';
                 this.classList.remove('btn-primary');
                 this.classList.add('btn-danger');
+
             } else {
                 clearInterval(timer_id);
-                //STARTボタンに戻す
+                //STOPボタンを押すとSTARTボタンに戻す
                 this.innerHTML = 'START';
                 this.classList.remove('btn-danger');
                 this.classList.add('btn-primary');
-            }
-
-
+            };
         });
 
+        //一桁の時に十の位に0を追加する関数     
         var addZero = function (value) {
             if (value < 10) {
                 value = '0' + value;
-            }
+            };
 
             return value;
         };
 
+        //現在時刻を表示する関数
+        var showClock = function () {
+            var now = new Date();
+
+            var seconds = now.getSeconds(); //秒を取得
+            seconds = addZero(seconds);
+
+            var minutes = now.getMinutes(); //分を取得
+            minutes = addZero(minutes);
+
+            var hours = now.getHours(); //時を取得
+            hours = addZero(hours);
+
+
+            document.getElementById('nowTime').innerHTML = hours + ':' + minutes + ':' + seconds
+        };
+
+        //現在時刻を１秒ごとに更新して表示
+        setInterval(showClock, 100);
+
+        //タイマーの関数
         var goTimer = function () {
             var now = new Date();
             var milli = now.getTime() - start.getTime();
@@ -71,34 +98,9 @@
             minutes = addZero(minutes);
             hours = addZero(hours);
 
-            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds
         };
-        /*
-        //一桁の時に十の位に0を追加する関数
-        var addZero = function (value) {
-            if (value < 10) {
-                value = '0' + value;
-            }
 
-            return value;
-        }
-
-        document.getElementById('start_stop').addEventListener('click',
-            function () {
-                var now = new Date();
-
-                var seconds = now.getSeconds(); //秒を取得
-                seconds = addZero(seconds);
-
-                var minutes = now.getMinutes(); //分を取得
-                minutes = addZero(minutes);
-
-                var hours = now.getHours(); //時を取得
-                hours = addZero(hours);
-
-                document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
-            });
-        */
     </script>
 </body>
 

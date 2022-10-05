@@ -1,6 +1,11 @@
+header .container {
+    text-align: right;
+    margin: 0 auto;
+}
+
 .container {
     text-align: center;
-    margin: 30px;
+    margin: 0 auto;
 }
 
 #timer {
