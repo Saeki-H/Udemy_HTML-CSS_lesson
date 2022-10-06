@@ -24,10 +24,11 @@
     </header>
 
     <div class="container">
-        <p id="timer">00:00:00.00</p>
+        <p id="timer">00:00:00.000</p>
 
         <div>
             <button id="start_stop" class="btn btn-lg btn-primary">START</button>
+            <button id="reset" class="btn btn-lg btn-warning">RESET</button>
         </div>
     </div>
 
@@ -35,11 +36,11 @@
         var start;
         var timer_id;
 
-        //ボタン(START, STOP)をクリックしたときの動作
+        //ボタン(START, STOP)を押したときの動作
         document.getElementById('start_stop').addEventListener('click', function () {
             if (this.innerHTML === 'START') {
                 start = new Date();
-                timer_id = setInterval(goTimer, 10);
+                timer_id = setInterval(goTimer, 1);
 
                 //STARTを押すとSTOPボタンにする
                 this.innerHTML = 'STOP';
@@ -55,14 +56,33 @@
             };
         });
 
+        //RESETを押すと00:00:00.000と表示
+        document.getElementById('reset').addEventListener('click', function () {
+            document.getElementById('timer').innerHTML = '00:00:00.000';
+        });
+
         //一桁の時に十の位に0を追加する関数     
         var addZero = function (value) {
             if (value < 10) {
                 value = '0' + value;
-            };
+            }
 
             return value;
         };
+
+        //一桁の時に十と百の位に0を追加する関数     
+        var addZero2 = function (value) {
+            if (value < 10) {
+                value = '00' + value;
+            }else if (value < 100) {
+                value = '0' + value;
+            }else if (value === 0) {
+                value = '000';
+            }
+
+            return value;
+        };
+
 
         //現在時刻を表示する関数
         var showClock = function () {
@@ -87,20 +107,23 @@
         //タイマーの関数
         var goTimer = function () {
             var now = new Date();
-            var milli = now.getTime() - start.getTime();
+            var milli = now.getTime() - start.getTime()
             var seconds = Math.floor(milli / 1000);
             var minutes = Math.floor(seconds / 60);
             var hours = Math.floor(minutes / 60);
 
+            milli = milli - seconds * 1000;
             seconds = seconds - minutes * 60;
             minutes = minutes - hours * 60;
+            milli = addZero2(milli);
             seconds = addZero(seconds);
             minutes = addZero(minutes);
             hours = addZero(hours);
 
-            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds
+            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds + '.' + milli;
         };
 
+        
     </script>
 </body>
 
